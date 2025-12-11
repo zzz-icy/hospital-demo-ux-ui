@@ -13,8 +13,7 @@ export default function Layout({ children }: LayoutProps) {
   const navItems = [
     { path: '/', label: 'Home' },
     { path: '/services', label: 'Services' },
-    { path: '/doctors', label: 'Find Doctors' },
-    { path: '/appointments', label: 'Book Appointment' },
+    { path: '/doctors', label: 'Book Appointment' },
     { path: '/about', label: 'About Us' },
     { path: '/contact', label: 'Contact' },
   ]
@@ -53,7 +52,7 @@ export default function Layout({ children }: LayoutProps) {
                 <MdSearch className="text-xl text-gray-600" />
               </button>
               <Link
-                to="/appointments"
+                to="/doctors"
                 className="bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-teal-700 transition-colors cursor-pointer"
               >
                 My Account

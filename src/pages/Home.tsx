@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { 
   MdPerson, 
@@ -6,11 +7,20 @@ import {
   MdFavorite,
   MdHealthAndSafety,
   MdAccessTime,
-  MdVerified
+  MdVerified,
+  MdEdit,
+  MdCheckCircle,
+  MdSpeed,
+  MdSecurity,
+  MdCheckCircleOutline,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp
 } from 'react-icons/md'
 import { HiArrowRight } from 'react-icons/hi'
+import iden2Logo from '../assets/iden2_logo.png'
 
 export default function Home() {
+  const [isExpanded, setIsExpanded] = useState(false)
   const specialties = [
     { name: 'Cardiology', icon: MdFavorite, description: 'Heart and vascular care' },
     { name: 'Pediatrics', icon: MdPerson, description: 'Care for children and adolescents' },
@@ -33,28 +43,126 @@ export default function Home() {
               At Meridian Health, we're committed to your complete well-being. Whether you're visiting our hospital, urgent care centers, or medical practices, you're more than a patient — you're family.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/appointments"
-                className="inline-flex items-center justify-center gap-2 bg-white text-teal-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-50 transition-colors shadow-lg hover:shadow-xl cursor-pointer"
-              >
-                Find a Doctor
-                <HiArrowRight className="text-xl" />
-              </Link>
-              <Link
-                to="/appointments"
-                className="inline-flex items-center justify-center gap-2 bg-teal-800 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-900 transition-colors border-2 border-white/20 cursor-pointer"
-              >
-                Schedule Appointment
-              </Link>
+                  <Link
+                    to="/doctors"
+                    className="inline-flex items-center justify-center gap-2 bg-white text-teal-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-50 transition-colors shadow-lg hover:shadow-xl cursor-pointer"
+                  >
+                    Book Appointment
+                    <HiArrowRight className="text-xl" />
+                  </Link>
             </div>
-            <p className="text-sm text-teal-200 mt-4">
-              Quick tip: Use <span className="font-medium" style={{ color: '#c084fc' }}>iDen2</span> to prefill your information and make booking even faster
-            </p>
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="text-sm text-teal-200 mt-4 flex items-center gap-2 hover:text-white transition-all duration-200 cursor-pointer group bg-white/5 hover:bg-white/10 rounded-lg px-4 py-2 border border-white/20 hover:border-white/40"
+            >
+              <span>Quick tip: Use <span className="font-medium" style={{ color: '#c084fc' }}>iDen2</span> to prefill your information and make booking even faster</span>
+              <span className="flex items-center gap-1">
+                <span className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'animate-bounce-arrow'}`}>
+                  <MdKeyboardArrowDown className="text-lg" />
+                </span>
+                <span className={`transition-transform duration-300 delay-75 ${isExpanded ? 'rotate-180 opacity-0' : 'animate-bounce-arrow-delayed opacity-100'}`}>
+                  <MdKeyboardArrowDown className="text-lg" />
+                </span>
+                <span className={`transition-transform duration-300 delay-150 ${isExpanded ? 'rotate-180 opacity-0' : 'animate-bounce-arrow-delayed-2 opacity-100'}`}>
+                  <MdKeyboardArrowDown className="text-lg" />
+                </span>
+              </span>
+            </button>
+
+            {/* Collapsible How It Works Section - Integrated into hero */}
+            <div className={`overflow-hidden transition-all duration-500 ease-in-out ${
+              isExpanded ? 'max-h-[2000px] opacity-100 mt-8' : 'max-h-0 opacity-0'
+            }`}>
+              <div className="pt-6 border-t border-teal-500/30">
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">How It Works</h2>
+                  <p className="text-base md:text-lg text-teal-100 max-w-2xl mx-auto">
+                    Booking an appointment is simple and straightforward. Follow these easy steps to get started.
+                  </p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-white/20">
+                  <div className="space-y-6">
+                    <div className={`flex items-start gap-4 transition-all duration-500 ${isExpanded ? 'animate-fade-in' : ''}`} style={{ animationDelay: isExpanded ? '0.1s' : '0s' }}>
+                      <div className="w-12 h-12 bg-white text-teal-600 rounded-xl flex items-center justify-center font-semibold flex-shrink-0 shadow-lg">
+                        <MdPerson className="text-2xl" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white text-lg mb-1">Choose Your Doctor</h3>
+                        <p className="text-teal-100">Browse our team of specialists and select the doctor you'd like to see</p>
+                      </div>
+                    </div>
+                    <div className={`flex items-start gap-4 transition-all duration-500 ${isExpanded ? 'animate-fade-in' : ''}`} style={{ animationDelay: isExpanded ? '0.2s' : '0s' }}>
+                      <div className="w-12 h-12 bg-white text-teal-600 rounded-xl flex items-center justify-center font-semibold flex-shrink-0 shadow-lg">
+                        <MdEdit className="text-2xl" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-white text-lg mb-1">Enter Your Information</h3>
+                        <p className="text-teal-100 mb-3">
+                          Fill in your details or use{' '}
+                          <span className="font-semibold" style={{ color: '#c084fc' }}>
+                            iDen2
+                          </span>
+                          {' '}to prefill automatically
+                        </p>
+
+                        {/* iDen2 Benefits Explanation */}
+                        <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 border border-white/30 mt-3">
+                          <div className="flex items-start gap-3 mb-3">
+                            <div className="w-8 h-8 bg-white/30 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 p-1.5">
+                              <img
+                                src={iden2Logo}
+                                alt="iDen2"
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-white text-sm mb-2">
+                                Why use <span style={{ color: '#c084fc' }}>iDen2</span>?
+                              </h4>
+                              <div className="space-y-2">
+                                <div className="flex items-start gap-2">
+                                  <MdSpeed className="text-white text-base flex-shrink-0 mt-0.5" />
+                                  <p className="text-xs text-teal-50">
+                                    <span className="font-medium">Save time:</span> Automatically fill in your personal information, insurance details, and contact info in seconds
+                                  </p>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                  <MdSecurity className="text-white text-base flex-shrink-0 mt-0.5" />
+                                  <p className="text-xs text-teal-50">
+                                    <span className="font-medium">Secure & verified:</span> Your identity is verified once and stored securely in your digital wallet
+                                  </p>
+                                </div>
+                                <div className="flex items-start gap-2">
+                                  <MdCheckCircleOutline className="text-white text-base flex-shrink-0 mt-0.5" />
+                                  <p className="text-xs text-teal-50">
+                                    <span className="font-medium">No errors:</span> Eliminate typos and ensure accurate information every time
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={`flex items-start gap-4 transition-all duration-500 ${isExpanded ? 'animate-fade-in' : ''}`} style={{ animationDelay: isExpanded ? '0.3s' : '0s' }}>
+                      <div className="w-12 h-12 bg-white text-teal-600 rounded-xl flex items-center justify-center font-semibold flex-shrink-0 shadow-lg">
+                        <MdCheckCircle className="text-2xl" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white text-lg mb-1">Confirm Appointment</h3>
+                        <p className="text-teal-100">Review and confirm your appointment details</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
         {/* Trust Indicators */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
           <div className="text-center">
@@ -101,7 +209,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Expert Physicians</h3>
               <p className="text-gray-600 leading-relaxed mb-4">Board-certified specialists with years of experience, dedicated to providing the highest quality care.</p>
               <Link to="/doctors" className="text-teal-600 font-semibold hover:text-teal-700 flex items-center gap-2 cursor-pointer">
-                Find Doctors
+                Book Appointment
                 <HiArrowRight />
               </Link>
             </div>

@@ -39,12 +39,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/doctors" className="hover:text-teal-400 transition-colors cursor-pointer">
-                  Find a Doctor
-                </Link>
-              </li>
-              <li>
-                <Link to="/appointments" className="hover:text-teal-400 transition-colors cursor-pointer">
-                  Schedule Appointment
+                  Book Appointment
                 </Link>
               </li>
               <li>

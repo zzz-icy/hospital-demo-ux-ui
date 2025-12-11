@@ -137,7 +137,7 @@ export default function Services() {
 
       <div className="mt-12 text-center">
         <Link
-          to="/appointments"
+          to="/doctors"
           className="inline-flex items-center gap-2 bg-teal-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl cursor-pointer"
         >
           Schedule an Appointment

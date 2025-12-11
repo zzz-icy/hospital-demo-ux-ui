@@ -20,3 +20,73 @@
     min-height: 100vh;
   }
 }
+
+@layer utilities {
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounce-arrow {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+
+  @keyframes bounce-arrow-delayed {
+
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.7;
+    }
+
+    50% {
+      transform: translateY(-4px);
+      opacity: 1;
+    }
+  }
+
+  @keyframes bounce-arrow-delayed-2 {
+
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.5;
+    }
+
+    50% {
+      transform: translateY(-4px);
+      opacity: 0.8;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+  }
+
+  .animate-bounce-arrow {
+    animation: bounce-arrow 1.5s ease-in-out infinite;
+  }
+
+  .animate-bounce-arrow-delayed {
+    animation: bounce-arrow-delayed 1.5s ease-in-out infinite;
+  }
+
+  .animate-bounce-arrow-delayed-2 {
+    animation: bounce-arrow-delayed-2 1.5s ease-in-out infinite;
+  }
+}
