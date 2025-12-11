@@ -35,14 +35,14 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to="/appointments"
-                className="inline-flex items-center justify-center gap-2 bg-white text-teal-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-50 transition-colors shadow-lg hover:shadow-xl"
+                className="inline-flex items-center justify-center gap-2 bg-white text-teal-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-50 transition-colors shadow-lg hover:shadow-xl cursor-pointer"
               >
                 Find a Doctor
                 <HiArrowRight className="text-xl" />
               </Link>
               <Link
                 to="/appointments"
-                className="inline-flex items-center justify-center gap-2 bg-teal-800 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-900 transition-colors border-2 border-white/20"
+                className="inline-flex items-center justify-center gap-2 bg-teal-800 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-900 transition-colors border-2 border-white/20 cursor-pointer"
               >
                 Schedule Appointment
               </Link>
@@ -88,7 +88,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Emergency Care</h3>
               <p className="text-gray-600 leading-relaxed mb-4">When the unexpected happens, you need to act fast. Our caring team is here for you every day, at all hours.</p>
-              <Link to="/services" className="text-teal-600 font-semibold hover:text-teal-700 flex items-center gap-2">
+              <Link to="/services" className="text-teal-600 font-semibold hover:text-teal-700 flex items-center gap-2 cursor-pointer">
                 Learn More
                 <HiArrowRight />
               </Link>
@@ -100,7 +100,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Expert Physicians</h3>
               <p className="text-gray-600 leading-relaxed mb-4">Board-certified specialists with years of experience, dedicated to providing the highest quality care.</p>
-              <Link to="/doctors" className="text-teal-600 font-semibold hover:text-teal-700 flex items-center gap-2">
+              <Link to="/doctors" className="text-teal-600 font-semibold hover:text-teal-700 flex items-center gap-2 cursor-pointer">
                 Find Doctors
                 <HiArrowRight />
               </Link>
@@ -112,7 +112,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">On-Site Services</h3>
               <p className="text-gray-600 leading-relaxed mb-4">Pharmacy, imaging, labs, and rehabilitation services all in one convenient location.</p>
-              <Link to="/services" className="text-teal-600 font-semibold hover:text-teal-700 flex items-center gap-2">
+              <Link to="/services" className="text-teal-600 font-semibold hover:text-teal-700 flex items-center gap-2 cursor-pointer">
                 View Services
                 <HiArrowRight />
               </Link>
@@ -133,7 +133,7 @@ export default function Home() {
                 <Link
                   key={index}
                   to="/doctors"
-                  className="bg-white rounded-lg p-6 hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-teal-300 text-center group"
+                  className="bg-white rounded-lg p-6 hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-teal-300 text-center group cursor-pointer"
                 >
                   <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-teal-600 transition-colors">
                     <Icon className="text-2xl text-teal-600 group-hover:text-white transition-colors" />

@@ -92,7 +92,7 @@ export default function Doctors() {
           <button
             key={specialty}
             onClick={() => setSelectedSpecialty(specialty)}
-            className={`px-5 py-2.5 rounded-lg font-medium transition-all duration-200 ${
+            className={`px-5 py-2.5 rounded-lg font-medium transition-all duration-200 cursor-pointer ${
               selectedSpecialty === specialty
                 ? 'bg-teal-600 text-white shadow-md'
                 : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
@@ -123,7 +123,7 @@ export default function Doctors() {
             </div>
             <button
               onClick={() => handleBookAppointment(doctor.id)}
-              className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+              className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors flex items-center justify-center gap-2 shadow-md hover:shadow-lg cursor-pointer"
             >
               <MdCalendarToday />
               Book Appointment

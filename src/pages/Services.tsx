@@ -102,7 +102,7 @@ export default function Services() {
               </ul>
               <Link
                 to="/doctors"
-                className="text-teal-600 font-semibold hover:text-teal-700 flex items-center gap-2 text-sm"
+                className="text-teal-600 font-semibold hover:text-teal-700 flex items-center gap-2 text-sm cursor-pointer"
               >
                 Find {service.name} Doctors
                 <HiArrowRight />
@@ -138,7 +138,7 @@ export default function Services() {
       <div className="mt-12 text-center">
         <Link
           to="/appointments"
-          className="inline-flex items-center gap-2 bg-teal-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl"
+          className="inline-flex items-center gap-2 bg-teal-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl cursor-pointer"
         >
           Schedule an Appointment
           <HiArrowRight className="text-xl" />

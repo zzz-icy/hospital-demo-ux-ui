@@ -38,27 +38,27 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">Find Care</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/doctors" className="hover:text-teal-400 transition-colors">
+                <Link to="/doctors" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Find a Doctor
                 </Link>
               </li>
               <li>
-                <Link to="/appointments" className="hover:text-teal-400 transition-colors">
+                <Link to="/appointments" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Schedule Appointment
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="hover:text-teal-400 transition-colors">
+                <Link to="/services" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Our Services
                 </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-teal-400 transition-colors">
+                <a href="#" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Urgent Care
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-teal-400 transition-colors">
+                <a href="#" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Emergency Care
                 </a>
               </li>
@@ -70,27 +70,27 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">Patient Resources</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="hover:text-teal-400 transition-colors">
+                <a href="#" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Pay Your Bill
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-teal-400 transition-colors">
+                <a href="#" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Medical Records
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-teal-400 transition-colors">
+                <a href="#" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Price Transparency
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-teal-400 transition-colors">
+                <a href="#" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Financial Assistance
                 </a>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-teal-400 transition-colors">
+                <Link to="/contact" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Contact Us
                 </Link>
               </li>
@@ -102,27 +102,27 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">About Us</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/about" className="hover:text-teal-400 transition-colors">
+                <Link to="/about" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Who We Are
                 </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-teal-400 transition-colors">
+                <a href="#" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Our Mission
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-teal-400 transition-colors">
+                <a href="#" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Careers
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-teal-400 transition-colors">
+                <a href="#" className="hover:text-teal-400 transition-colors cursor-pointer">
                   News & Stories
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-teal-400 transition-colors">
+                <a href="#" className="hover:text-teal-400 transition-colors cursor-pointer">
                   Privacy Policy
                 </a>
               </li>

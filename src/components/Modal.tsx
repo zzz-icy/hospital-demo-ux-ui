@@ -15,7 +15,7 @@ export default function Modal({ isOpen, onClose, children, title }: ModalProps) 
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
-              className="absolute inset-0 bg-gray-900/30 backdrop-blur-sm transition-opacity"
+              className="absolute inset-0 bg-gray-900/30 backdrop-blur-sm transition-opacity cursor-pointer"
         onClick={onClose}
       />
       
@@ -26,7 +26,7 @@ export default function Modal({ isOpen, onClose, children, title }: ModalProps) 
             <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
               aria-label="Close"
             >
               <MdClose className="text-xl text-gray-600" />

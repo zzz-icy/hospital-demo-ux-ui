@@ -175,13 +175,13 @@ export default function AppointmentConfirm() {
         <div className="flex space-x-4 pt-4">
           <button
             onClick={handleClose}
-            className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+            className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors cursor-pointer"
           >
             Back
           </button>
           <button
             onClick={handleConfirm}
-            className="flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+            className="flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
           >
             <MdCheckCircle className="text-xl" />
             Confirm Appointment

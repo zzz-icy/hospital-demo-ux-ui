@@ -97,7 +97,7 @@ export default function Appointments() {
       <div className="text-center">
         <button
           onClick={() => navigate('/doctors')}
-          className="inline-flex items-center gap-2 bg-teal-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl"
+          className="inline-flex items-center gap-2 bg-teal-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl cursor-pointer"
         >
           Browse Doctors
           <MdArrowForward className="text-xl" />

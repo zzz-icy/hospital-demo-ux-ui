@@ -135,7 +135,7 @@ export default function PatientInfo() {
                   </p>
                   <button
                     onClick={handleIden2Connect}
-                    className="px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg"
+                    className="px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg cursor-pointer"
                   >
                     Connect with iDen2
                   </button>
@@ -213,7 +213,7 @@ export default function PatientInfo() {
                               href="https://apps.apple.com/app/iden2"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 px-3 py-2 bg-black text-white rounded-lg text-xs font-medium hover:bg-gray-800 transition-colors"
+                              className="flex items-center gap-1.5 px-3 py-2 bg-black text-white rounded-lg text-xs font-medium hover:bg-gray-800 transition-colors cursor-pointer"
                             >
                               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
@@ -224,7 +224,7 @@ export default function PatientInfo() {
                               href="https://play.google.com/store/apps/details?id=com.iden2"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 px-3 py-2 bg-black text-white rounded-lg text-xs font-medium hover:bg-gray-800 transition-colors"
+                              className="flex items-center gap-1.5 px-3 py-2 bg-black text-white rounded-lg text-xs font-medium hover:bg-gray-800 transition-colors cursor-pointer"
                             >
                               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
@@ -272,7 +272,7 @@ export default function PatientInfo() {
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <button
                       onClick={handleQRCodeScanned}
-                      className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+                      className="text-sm text-teal-600 hover:text-teal-700 font-medium cursor-pointer"
                     >
                       Already scanned? Click here to continue
                     </button>
@@ -423,14 +423,14 @@ export default function PatientInfo() {
             <button
               type="button"
               onClick={() => navigate('/doctors')}
-              className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+              className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors cursor-pointer"
             >
               Back
             </button>
             <button
               type="submit"
               disabled={!isFormValid}
-              className="flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+              className="flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg cursor-pointer"
             >
               Continue to Confirmation
             </button>
