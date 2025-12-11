@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { MdLocalHospital, MdSearch } from 'react-icons/md'
 import Footer from './Footer'

@@ -3,7 +3,6 @@ import {
   MdPerson, 
   MdEmergency, 
   MdHealthAndSafety,
-  MdLocalHospital,
   MdPregnantWoman,
   MdChildCare,
   MdPsychology,
