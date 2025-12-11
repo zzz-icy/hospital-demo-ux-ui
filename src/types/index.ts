@@ -10,6 +10,7 @@ export interface PatientData {
   name: string
   age: string
   healthInsurance: string
+  healthInsuranceProvider: string
   email: string
   phone: string
   address: string

@@ -47,6 +47,9 @@ export default function Home() {
                 Schedule Appointment
               </Link>
             </div>
+            <p className="text-sm text-teal-200 mt-4">
+              Quick tip: Use <span className="font-medium" style={{ color: '#c084fc' }}>iDen2</span> to prefill your information and make booking even faster
+            </p>
           </div>
         </div>
       </div>
