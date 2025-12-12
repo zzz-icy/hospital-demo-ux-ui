@@ -30,6 +30,7 @@ export default function AppointmentConfirm() {
   const location = useLocation()
   const state = location.state as LocationState | null
   const [isOpen, setIsOpen] = useState(!!state)
+  const [isConfirmed, setIsConfirmed] = useState(false)
 
   useEffect(() => {
     if (!state) {
@@ -44,23 +45,56 @@ export default function AppointmentConfirm() {
 
   const handleClose = () => {
     setIsOpen(false)
-    navigate('/appointments/patient-info', {
-      state: { formData, doctor },
-      replace: true
-    })
+    if (isConfirmed) {
+      navigate('/')
+    } else {
+      navigate('/appointments/patient-info', {
+        state: { formData, doctor },
+        replace: true
+      })
+    }
   }
 
   const handleConfirm = () => {
     // In a real app, this would submit to a backend
-    alert('Appointment booked successfully! You will receive a confirmation email shortly.')
-    setIsOpen(false)
-    navigate('/')
+    setIsConfirmed(true)
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="Confirm Appointment">
-      <div className="space-y-6">
-        <p className="text-gray-600 mb-6">Please review your appointment details</p>
+    <Modal isOpen={isOpen} onClose={handleClose} title={isConfirmed ? "Appointment Confirmed!" : "Confirm Appointment"}>
+      {isConfirmed ? (
+        // Success view
+        <div className="space-y-6 text-center">
+          <div className="flex justify-center">
+            <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center">
+              <MdCheckCircle className="text-5xl text-teal-600" />
+            </div>
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Appointment Booked Successfully!</h3>
+            <p className="text-gray-600 mb-4">
+              You will receive a confirmation email shortly.
+            </p>
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 text-left mt-6">
+              <p className="text-sm text-gray-600 mb-1">Appointment with</p>
+              <p className="text-lg font-semibold text-gray-900">{doctor.name}</p>
+              <p className="text-teal-600 font-medium">{doctor.specialty}</p>
+              <p className="text-sm text-gray-600 mt-2">
+                {appointmentDate} at 10:00 AM
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={handleClose}
+            className="w-full px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+          >
+            Return to Home
+          </button>
+        </div>
+      ) : (
+        // Original confirmation view
+        <div className="space-y-6">
+          <p className="text-gray-600 mb-6">Please review your appointment details</p>
 
         {/* Doctor Information */}
         <div className="border-b border-gray-200 pb-6">
@@ -195,6 +229,7 @@ export default function AppointmentConfirm() {
           </button>
         </div>
       </div>
+      )}
     </Modal>
   )
 }
