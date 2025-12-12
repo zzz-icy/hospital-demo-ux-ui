@@ -11,16 +11,28 @@ interface LocationState {
   usedIden2?: boolean
 }
 
+// Calculate appointment date once (7 days from now)
+const getAppointmentDate = () => {
+  const date = new Date()
+  date.setDate(date.getDate() + 7)
+  return date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
+const appointmentDate = getAppointmentDate()
+
 export default function AppointmentConfirm() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [isOpen, setIsOpen] = useState(false)
   const state = location.state as LocationState | null
+  const [isOpen, setIsOpen] = useState(!!state)
 
   useEffect(() => {
-    if (state) {
-      setIsOpen(true)
-    } else {
+    if (!state) {
       // If no state, redirect back
       navigate('/doctors')
     }
@@ -153,12 +165,7 @@ export default function AppointmentConfirm() {
                 Date:
               </span>
               <span className="font-medium text-gray-900">
-                {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {appointmentDate}
               </span>
             </div>
             <div className="flex justify-between items-center">

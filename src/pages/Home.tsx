@@ -13,8 +13,7 @@ import {
   MdSpeed,
   MdSecurity,
   MdCheckCircleOutline,
-  MdKeyboardArrowDown,
-  MdKeyboardArrowUp
+  MdKeyboardArrowDown
 } from 'react-icons/md'
 import { HiArrowRight } from 'react-icons/hi'
 import iden2Logo from '../assets/iden2_logo.png'

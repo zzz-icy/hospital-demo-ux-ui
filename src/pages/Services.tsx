@@ -8,13 +8,14 @@ import {
   MdPsychology,
   MdHealing
 } from 'react-icons/md'
+import type { IconType } from 'react-icons'
 import { Link } from 'react-router-dom'
 import { HiArrowRight } from 'react-icons/hi'
 
 interface Service {
   name: string
   description: string
-  icon: any
+  icon: IconType
   features: string[]
 }
 
