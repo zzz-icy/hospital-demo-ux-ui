@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { MdCheckCircle, MdAccountCircle, MdEmail, MdPhone, MdHome, MdCreditCard, MdDownload, MdVerifiedUser, MdQrCodeScanner, MdBusiness } from 'react-icons/md'
+import { MdCheckCircle, MdAccountCircle, MdEmail, MdPhone, MdHome, MdCreditCard, MdDownload, MdVerifiedUser, MdQrCodeScanner, MdBusiness, MdPerson, MdCalendarToday, MdAccessTime, MdAttachMoney, MdInfo } from 'react-icons/md'
 import { HiCheck } from 'react-icons/hi'
+import Modal from '../components/Modal'
 import iden2Logo from '../assets/iden2_logo.png'
 
 interface PatientData {
@@ -23,6 +24,20 @@ const doctors: Record<string, { name: string; specialty: string }> = {
   '6': { name: 'Dr. Robert Taylor', specialty: 'General Medicine' },
 }
 
+// Calculate appointment date (7 days from now)
+const getAppointmentDate = () => {
+  const date = new Date()
+  date.setDate(date.getDate() + 7)
+  return date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
+const appointmentDate = getAppointmentDate()
+
 export default function PatientInfo() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -41,11 +56,8 @@ export default function PatientInfo() {
 
   const [isIden2Connected, setIsIden2Connected] = useState(false)
   const [showQRCode, setShowQRCode] = useState(false)
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [useNewFlow, setUseNewFlow] = useState(false) // Toggle between flows
 
   const handleIden2Connect = () => {
     setShowQRCode(true)
@@ -67,12 +79,14 @@ export default function PatientInfo() {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Navigate to confirm page which will show modal
-    navigate(`/appointments/confirm?doctorId=${doctorId}`, {
-      state: { formData, doctor, usedIden2: isIden2Connected },
-    })
+  const handleConfirm = () => {
+    // In a real app, this would submit to a backend
+    setShowSuccessModal(true)
+  }
+
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false)
+    navigate('/')
   }
 
   const isFormValid = formData.name && formData.age && formData.healthInsurance && formData.healthInsuranceProvider
@@ -106,6 +120,31 @@ export default function PatientInfo() {
         </div>
       </div>
 
+      {/* Flow Toggle - Outside the card */}
+      <div className="mb-6 flex items-center justify-end gap-3">
+        <span className={`text-sm font-medium ${!useNewFlow ? 'text-gray-900' : 'text-gray-500'}`}>
+          Standard
+        </span>
+        <button
+          onClick={() => {
+            setUseNewFlow(!useNewFlow)
+            // Reset connection state when switching flows
+            setIsIden2Connected(false)
+            setShowQRCode(false)
+          }}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 ${useNewFlow ? 'bg-teal-600' : 'bg-gray-300'
+            }`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${useNewFlow ? 'translate-x-6' : 'translate-x-1'
+              }`}
+          />
+        </button>
+        <span className={`text-sm font-medium ${useNewFlow ? 'text-gray-900' : 'text-gray-500'}`}>
+          With Cost Estimate
+        </span>
+      </div>
+
       <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Patient Information</h1>
@@ -117,31 +156,65 @@ export default function PatientInfo() {
         {/* iDen2 Integration Section */}
         {!isIden2Connected ? (
           !showQRCode ? (
-            <div className="mb-6 p-6 bg-gradient-to-r from-teal-50 to-indigo-50 rounded-xl border-2 border-teal-200">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm p-2">
-                  <img 
-                    src={iden2Logo} 
-                    alt="iDen2" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
-                    Use <span className="font-semibold" style={{ color: '#783adb' }}>iDen2</span> to Prefill Information
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Connect your iDen2 wallet to automatically fill in your personal information and save time
-                  </p>
-                  <button
-                    onClick={handleIden2Connect}
-                    className="px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg cursor-pointer"
-                  >
-                    Connect with iDen2
-                  </button>
+            useNewFlow ? (
+              // New Flow: Emphasizes iDen2 connection requirement
+              <div className="mb-6 p-8 bg-gradient-to-r from-teal-50 to-indigo-50 rounded-xl border-2 border-teal-200 shadow-lg">
+                <div className="flex items-start gap-6">
+                  <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm p-3">
+                    <img
+                      src={iden2Logo}
+                      alt="iDen2"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                      Connect with <span className="font-bold" style={{ color: '#783adb' }}>iDen2</span> to Continue
+                    </h3>
+                    <p className="text-gray-700 mb-3">
+                      To book your appointment and see your <span className="font-semibold text-teal-600">estimated cost</span>, please connect your iDen2 wallet
+                    </p>
+                    <div className="flex items-start gap-2 text-sm text-gray-600 mb-6">
+                      <MdInfo className="text-teal-600 flex-shrink-0 mt-0.5" />
+                      <span>Your identity will be verified and cost estimate will be calculated based on your insurance</span>
+                    </div>
+                    <button
+                      onClick={handleIden2Connect}
+                      className="px-8 py-4 bg-teal-600 text-white rounded-lg font-bold text-lg hover:bg-teal-700 transition-all shadow-xl hover:shadow-2xl transform hover:scale-105 cursor-pointer"
+                    >
+                      Connect with iDen2 to Get Started
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+            // Standard Flow
+                <div className="mb-6 p-6 bg-gradient-to-r from-teal-50 to-indigo-50 rounded-xl border-2 border-teal-200">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm p-2">
+                      <img
+                        src={iden2Logo}
+                        alt="iDen2"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+                        Connect with <span className="font-semibold" style={{ color: '#783adb' }}>iDen2</span>
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Connect your iDen2 wallet to securely share your personal information for your appointment
+                      </p>
+                      <button
+                        onClick={handleIden2Connect}
+                        className="px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg cursor-pointer"
+                      >
+                        Connect with iDen2
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )
           ) : (
             <div className="mb-6 p-6 bg-white rounded-xl border-2 border-teal-200 shadow-lg">
               <div className="flex items-start gap-4 mb-6">
@@ -282,7 +355,7 @@ export default function PatientInfo() {
             </div>
           )
         ) : (
-          <div className="mb-6 p-4 bg-green-50 rounded-xl border-2 border-green-200">
+            <div className={`mb-6 p-4 rounded-xl border-2 ${useNewFlow ? 'bg-gradient-to-r from-green-50 to-teal-50 border-green-300' : 'bg-green-50 border-green-200'}`}>
             <div className="flex items-center gap-3">
               <MdCheckCircle className="text-2xl text-green-600 flex-shrink-0" />
               <div className="flex items-center gap-2">
@@ -292,133 +365,173 @@ export default function PatientInfo() {
                   className="w-6 h-6 object-contain"
                 />
                 <p className="text-sm text-green-800 font-medium">
-                  Connected to <span className="font-semibold" style={{ color: '#783adb' }}>iDen2</span> - Information prefilled from your identity wallet
+                    Connected to <span className="font-semibold" style={{ color: '#783adb' }}>iDen2</span> - Information retrieved from your identity wallet
                 </p>
               </div>
             </div>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <MdAccountCircle className="text-lg text-gray-500" />
-              Full Name *
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
-              placeholder="Enter your full name"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-2">
-                Age *
-              </label>
-              <input
-                type="number"
-                id="age"
-                name="age"
-                value={formData.age}
-                onChange={handleInputChange}
-                required
-                min="1"
-                max="120"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
-                placeholder="Enter your age"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="healthInsurance" className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                <MdCreditCard className="text-lg text-gray-500" />
-                Health Insurance Number *
-              </label>
-              <input
-                type="text"
-                id="healthInsurance"
-                name="healthInsurance"
-                value={formData.healthInsurance}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
-                placeholder="INS-XXXXXXXXX"
-              />
+        {/* Cost Estimate - Show in new flow after iDen2 connection */}
+        {isIden2Connected && useNewFlow && (
+          <div className="mb-6 p-6 bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl border-2 border-teal-300 shadow-md">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <MdAttachMoney className="text-2xl text-teal-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Estimated Visit Cost</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Based on your insurance coverage and the selected appointment type
+                </p>
+                <div className="bg-white rounded-lg p-4 border border-teal-200 shadow-sm">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-600">Consultation Fee</span>
+                    <span className="font-semibold text-gray-900">$250.00</span>
+                  </div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-600">Insurance Coverage</span>
+                    <span className="font-semibold text-green-600">- $200.00</span>
+                  </div>
+                  <div className="border-t border-gray-200 pt-2 mt-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-lg font-semibold text-gray-900">Your Estimated Cost</span>
+                      <span className="text-2xl font-bold text-teal-600">$50.00</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-3 flex items-center gap-1">
+                    <MdInfo className="text-gray-400" />
+                    Final cost may vary based on services provided during your visit
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
+        )}
 
-          <div>
-            <label htmlFor="healthInsuranceProvider" className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <MdBusiness className="text-lg text-gray-500" />
-              Health Insurance Provider *
-            </label>
-            <input
-              type="text"
-              id="healthInsuranceProvider"
-              name="healthInsuranceProvider"
-              value={formData.healthInsuranceProvider}
-              onChange={handleInputChange}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
-              placeholder="e.g., BlueCross BlueShield, Aetna, UnitedHealthcare"
-            />
+        {/* Confirmation Content - Show after iDen2 connection */}
+        {isIden2Connected && (
+          <div className="space-y-6 mb-6">
+            <p className="text-gray-600 mb-6">Please review your appointment details</p>
+
+            {/* Doctor Information */}
+            <div className="border-b border-gray-200 pb-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <MdPerson className="text-teal-600" />
+                Doctor Information
+              </h3>
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <p className="text-lg font-medium text-gray-900">{doctor.name}</p>
+                <p className="text-teal-600 font-medium">{doctor.specialty}</p>
+              </div>
+            </div>
+
+            {/* Patient Information */}
+            <div className="border-b border-gray-200 pb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <MdAccountCircle className="text-teal-600" />
+                  Patient Information
+                </h3>
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-purple-50 rounded-lg border border-purple-200">
+                  <img
+                    src={iden2Logo}
+                    alt="iDen2"
+                    className="w-4 h-4 object-contain"
+                  />
+                  <span className="text-xs font-medium" style={{ color: '#783adb' }}>
+                    Verified with iDen2
+                  </span>
+                </div>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4 space-y-3 border border-gray-200">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 flex items-center gap-2">
+                    <MdAccountCircle className="text-gray-400" />
+                    Name:
+                  </span>
+                  <span className="font-medium text-gray-900">{formData.name}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Age:</span>
+                  <span className="font-medium text-gray-900">{formData.age}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 flex items-center gap-2">
+                    <MdCreditCard className="text-gray-400" />
+                    Health Insurance Number:
+                  </span>
+                  <span className="font-medium text-gray-900">{formData.healthInsurance}</span>
+                </div>
+                {formData.healthInsuranceProvider && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600 flex items-center gap-2">
+                      <MdBusiness className="text-gray-400" />
+                      Insurance Provider:
+                    </span>
+                    <span className="font-medium text-gray-900">{formData.healthInsuranceProvider}</span>
+                  </div>
+                )}
+                {formData.email && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600 flex items-center gap-2">
+                      <MdEmail className="text-gray-400" />
+                      Email:
+                    </span>
+                    <span className="font-medium text-gray-900">{formData.email}</span>
+                  </div>
+                )}
+                {formData.phone && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600 flex items-center gap-2">
+                      <MdPhone className="text-gray-400" />
+                      Phone:
+                    </span>
+                    <span className="font-medium text-gray-900">{formData.phone}</span>
+                  </div>
+                )}
+                {formData.address && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600 flex items-center gap-2">
+                      <MdHome className="text-gray-400" />
+                      Address:
+                    </span>
+                    <span className="font-medium text-gray-900">{formData.address}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Appointment Details */}
+            <div className="border-b border-gray-200 pb-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <MdCalendarToday className="text-teal-600" />
+                Appointment Details
+              </h3>
+              <div className="bg-gray-50 rounded-lg p-4 space-y-3 border border-gray-200">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 flex items-center gap-2">
+                    <MdCalendarToday className="text-gray-400" />
+                    Date:
+                  </span>
+                  <span className="font-medium text-gray-900">
+                    {appointmentDate}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 flex items-center gap-2">
+                    <MdAccessTime className="text-gray-400" />
+                    Time:
+                  </span>
+                  <span className="font-medium text-gray-900">10:00 AM</span>
+                </div>
+              </div>
+            </div>
           </div>
+        )}
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <MdEmail className="text-lg text-gray-500" />
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
-              placeholder="your.email@example.com"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <MdPhone className="text-lg text-gray-500" />
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
-              placeholder="+1-555-0123"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <MdHome className="text-lg text-gray-500" />
-              Address
-            </label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
-              placeholder="123 Main St, City, State ZIP"
-            />
-          </div>
-
+        {/* Action Buttons */}
+        {isIden2Connected && (
           <div className="flex space-x-4 pt-4">
             <button
               type="button"
@@ -428,15 +541,48 @@ export default function PatientInfo() {
               Back
             </button>
             <button
-              type="submit"
+              type="button"
+              onClick={handleConfirm}
               disabled={!isFormValid}
-              className="flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg cursor-pointer"
+              className="flex-1 px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
             >
-              Continue to Confirmation
+              <MdCheckCircle className="text-xl" />
+              Confirm Appointment
             </button>
           </div>
-        </form>
+        )}
       </div>
+
+      {/* Success Modal */}
+      <Modal isOpen={showSuccessModal} onClose={handleCloseSuccessModal} title="Appointment Confirmed!">
+        <div className="space-y-6 text-center">
+          <div className="flex justify-center">
+            <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center">
+              <MdCheckCircle className="text-5xl text-teal-600" />
+            </div>
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Appointment Booked Successfully!</h3>
+            <p className="text-gray-600 mb-4">
+              You will receive a confirmation email shortly.
+            </p>
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 text-left mt-6">
+              <p className="text-sm text-gray-600 mb-1">Appointment with</p>
+              <p className="text-lg font-semibold text-gray-900">{doctor.name}</p>
+              <p className="text-teal-600 font-medium">{doctor.specialty}</p>
+              <p className="text-sm text-gray-600 mt-2">
+                {appointmentDate} at 10:00 AM
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={handleCloseSuccessModal}
+            className="w-full px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+          >
+            Return to Home
+          </button>
+        </div>
+      </Modal>
     </div>
   )
 }
