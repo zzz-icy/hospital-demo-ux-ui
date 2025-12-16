@@ -6,6 +6,7 @@ import Modal from '../components/Modal'
 import iden2Logo from '../assets/iden2_logo.png'
 
 interface LocationState {
+  selectedTime: string
   formData: PatientData
   doctor: { name: string; specialty: string }
   usedIden2?: boolean
