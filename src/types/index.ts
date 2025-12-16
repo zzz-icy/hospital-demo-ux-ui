@@ -7,6 +7,7 @@ export interface User {
 }
 
 export interface PatientData {
+  selectedTime: string
   name: string
   age: string
   healthInsurance: string
