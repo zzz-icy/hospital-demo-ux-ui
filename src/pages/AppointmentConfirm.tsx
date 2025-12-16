@@ -80,7 +80,7 @@ export default function AppointmentConfirm() {
               <p className="text-lg font-semibold text-gray-900">{doctor.name}</p>
               <p className="text-teal-600 font-medium">{doctor.specialty}</p>
               <p className="text-sm text-gray-600 mt-2">
-                {appointmentDate} at 10:00 AM
+                {appointmentDate} at {state.selectedTime || '10:00 AM'}
               </p>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { MdCheckCircle, MdAccountCircle, MdEmail, MdPhone, MdHome, MdCreditCard, MdDownload, MdVerifiedUser, MdQrCodeScanner, MdBusiness, MdPerson, MdCalendarToday, MdAccessTime, MdAttachMoney, MdInfo } from 'react-icons/md'
+import { MdCheckCircle, MdAccountCircle, MdEmail, MdPhone, MdHome, MdCreditCard, MdBusiness, MdPerson, MdCalendarToday, MdAccessTime, MdAttachMoney, MdInfo, MdSpeed, MdSecurity, MdCheckCircleOutline } from 'react-icons/md'
 import { HiCheck } from 'react-icons/hi'
 import Modal from '../components/Modal'
 import iden2Logo from '../assets/iden2_logo.png'
@@ -55,18 +55,13 @@ export default function PatientInfo() {
   })
 
   const [isIden2Connected, setIsIden2Connected] = useState(false)
-  const [showQRCode, setShowQRCode] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [useNewFlow, setUseNewFlow] = useState(false) // Toggle between flows
-
-  const handleIden2Connect = () => {
-    setShowQRCode(true)
-  }
+  const [selectedTime, setSelectedTime] = useState('10:00 AM') // Selected appointment time
 
   const handleQRCodeScanned = () => {
     // Simulate QR code scan and connection
     setIsIden2Connected(true)
-    setShowQRCode(false)
     // In real implementation, this would connect to iden2 wallet and fetch identity data
     setFormData({
       name: 'John Doe',
@@ -130,7 +125,6 @@ export default function PatientInfo() {
             setUseNewFlow(!useNewFlow)
             // Reset connection state when switching flows
             setIsIden2Connected(false)
-            setShowQRCode(false)
           }}
           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 ${useNewFlow ? 'bg-teal-600' : 'bg-gray-300'
             }`}
@@ -155,133 +149,114 @@ export default function PatientInfo() {
 
         {/* iDen2 Integration Section */}
         {!isIden2Connected ? (
-          !showQRCode ? (
-            useNewFlow ? (
-              // New Flow: Emphasizes iDen2 connection requirement
-              <div className="mb-6 p-8 bg-gradient-to-r from-teal-50 to-indigo-50 rounded-xl border-2 border-teal-200 shadow-lg">
-                <div className="flex items-start gap-6">
-                  <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm p-3">
+          useNewFlow ? (
+            // New Flow: Emphasizes iDen2 connection requirement - Aligned with standard flow
+            <div className="mb-6 p-6 bg-gradient-to-r from-teal-50 to-indigo-50 rounded-xl border-2 border-teal-200">
+              {/* Header - Simplified */}
+              <div className="mb-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm p-2">
                     <img
                       src={iden2Logo}
                       alt="iDen2"
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                      Connect with <span className="font-bold" style={{ color: '#783adb' }}>iDen2</span> to Continue
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Connect with <span className="font-semibold" style={{ color: '#783adb' }}>iDen2</span> to Continue
                     </h3>
-                    <p className="text-gray-700 mb-3">
+                    <p className="text-sm text-gray-600">
                       To book your appointment and see your <span className="font-semibold text-teal-600">estimated cost</span>, please connect your iDen2 wallet
                     </p>
-                    <div className="flex items-start gap-2 text-sm text-gray-600 mb-6">
-                      <MdInfo className="text-teal-600 flex-shrink-0 mt-0.5" />
-                      <span>Your identity will be verified and cost estimate will be calculated based on your insurance</span>
-                    </div>
-                    <button
-                      onClick={handleIden2Connect}
-                      className="px-8 py-4 bg-teal-600 text-white rounded-lg font-bold text-lg hover:bg-teal-700 transition-all shadow-xl hover:shadow-2xl transform hover:scale-105 cursor-pointer"
-                    >
-                      Connect with iDen2 to Get Started
-                    </button>
                   </div>
                 </div>
-              </div>
-            ) : (
-            // Standard Flow
-                <div className="mb-6 p-6 bg-gradient-to-r from-teal-50 to-indigo-50 rounded-xl border-2 border-teal-200">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm p-2">
-                      <img
-                        src={iden2Logo}
-                        alt="iDen2"
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
-                        Connect with <span className="font-semibold" style={{ color: '#783adb' }}>iDen2</span>
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-4">
-                        Connect your iDen2 wallet to securely share your personal information for your appointment
+                <div className="flex items-start gap-2 text-xs text-gray-600 mt-3">
+                  <MdInfo className="text-teal-600 flex-shrink-0 mt-0.5" />
+                  <span>Your identity will be verified and cost estimate will be calculated based on your insurance</span>
+                </div>
+
+                {/* How it works */}
+                <div className="mt-4 pt-4 border-t border-teal-200/50">
+                  <h4 className="font-semibold text-gray-900 text-sm mb-2">
+                    How it works?
+                  </h4>
+                  <div className="space-y-1.5">
+                    <div className="flex items-start gap-2">
+                      <MdSpeed className="text-teal-600 text-sm flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-gray-700">
+                        <span className="font-medium">Save time:</span> Automatically fills your information, insurance, and contact details
                       </p>
-                      <button
-                        onClick={handleIden2Connect}
-                        className="px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-md hover:shadow-lg cursor-pointer"
-                      >
-                        Connect with iDen2
-                      </button>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <MdSecurity className="text-teal-600 text-sm flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-gray-700">
+                        <span className="font-medium">Secure & verified:</span> Your identity is verified and stored securely
+                      </p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <MdCheckCircleOutline className="text-teal-600 text-sm flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-gray-700">
+                        <span className="font-medium">No errors:</span> Eliminate typos and ensure accuracy
+                      </p>
                     </div>
                   </div>
-                </div>
-              )
-          ) : (
-            <div className="mb-6 p-6 bg-white rounded-xl border-2 border-teal-200 shadow-lg">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm p-2">
-                  <img 
-                    src={iden2Logo} 
-                    alt="iDen2" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    Connect with <span className="font-semibold" style={{ color: '#783adb' }}>iDen2</span>
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Scan the QR code with your iDen2 app to securely share your information
-                  </p>
                 </div>
               </div>
 
-              {/* QR Code Section */}
-              <div className="flex flex-col md:flex-row gap-6 items-start">
-                <div className="flex-shrink-0 mx-auto md:mx-0">
-                  <div className="bg-white p-4 rounded-lg border-2 border-gray-200 shadow-sm">
-                    {/* Mock QR Code - Simple pattern */}
-                    <div className="w-[200px] h-[200px] bg-white relative" style={{
+              {/* QR Code Section - Main Focus */}
+              <div className="bg-white rounded-xl p-6 border-2 border-teal-300 shadow-lg">
+                <div className="text-center mb-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Scan QR Code to Connect</h3>
+                  <p className="text-sm text-gray-600">Open your iDen2 app and scan the QR code below to securely share your information</p>
+                </div>
+
+                {/* QR Code - Centered and Prominent */}
+                <div className="flex justify-center mb-6">
+                  <div className="bg-white p-6 rounded-xl border-4 border-teal-200 shadow-xl">
+                    <div className="w-[220px] h-[220px] bg-white relative" style={{
                       backgroundImage: `
-                        repeating-linear-gradient(0deg, #000 0px, #000 8px, #fff 8px, #fff 16px),
-                        repeating-linear-gradient(90deg, #000 0px, #000 8px, #fff 8px, #fff 16px)
+                        repeating-linear-gradient(0deg, #000 0px, #000 10px, #fff 10px, #fff 20px),
+                        repeating-linear-gradient(90deg, #000 0px, #000 10px, #fff 10px, #fff 20px)
                       `,
-                      backgroundSize: '16px 16px'
+                      backgroundSize: '20px 20px'
                     }}>
                       {/* Corner markers */}
-                      <div className="absolute top-3 left-3 w-14 h-14 border-4 border-black bg-white">
-                        <div className="absolute top-1 left-1 w-4 h-4 bg-black"></div>
-                        <div className="absolute top-1 right-1 w-4 h-4 bg-black"></div>
-                        <div className="absolute bottom-1 left-1 w-4 h-4 bg-black"></div>
+                      <div className="absolute top-4 left-4 w-16 h-16 border-4 border-black bg-white">
+                        <div className="absolute top-1 left-1 w-5 h-5 bg-black"></div>
+                        <div className="absolute top-1 right-1 w-5 h-5 bg-black"></div>
+                        <div className="absolute bottom-1 left-1 w-5 h-5 bg-black"></div>
                       </div>
-                      <div className="absolute top-3 right-3 w-14 h-14 border-4 border-black bg-white">
-                        <div className="absolute top-1 left-1 w-4 h-4 bg-black"></div>
-                        <div className="absolute top-1 right-1 w-4 h-4 bg-black"></div>
-                        <div className="absolute bottom-1 right-1 w-4 h-4 bg-black"></div>
+                      <div className="absolute top-4 right-4 w-16 h-16 border-4 border-black bg-white">
+                        <div className="absolute top-1 left-1 w-5 h-5 bg-black"></div>
+                        <div className="absolute top-1 right-1 w-5 h-5 bg-black"></div>
+                        <div className="absolute bottom-1 right-1 w-5 h-5 bg-black"></div>
                       </div>
-                      <div className="absolute bottom-3 left-3 w-14 h-14 border-4 border-black bg-white">
-                        <div className="absolute bottom-1 left-1 w-4 h-4 bg-black"></div>
-                        <div className="absolute bottom-1 right-1 w-4 h-4 bg-black"></div>
-                        <div className="absolute top-1 left-1 w-4 h-4 bg-black"></div>
+                      <div className="absolute bottom-4 left-4 w-16 h-16 border-4 border-black bg-white">
+                        <div className="absolute bottom-1 left-1 w-5 h-5 bg-black"></div>
+                        <div className="absolute bottom-1 right-1 w-5 h-5 bg-black"></div>
+                        <div className="absolute top-1 left-1 w-5 h-5 bg-black"></div>
                       </div>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-500 text-center mt-2">Scan with iDen2 app</p>
                 </div>
+                <p className="text-center text-sm font-medium text-gray-700 mb-6">Scan with your iDen2 app</p>
 
-                {/* Steps for First-Time Users */}
-                <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900 mb-3 text-sm">First time using iDen2?</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <span className="text-xs font-semibold text-teal-600">1</span>
-                      </div>
-                      <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                          <MdDownload className="text-teal-600 text-sm" />
-                          <span className="font-medium text-sm text-gray-900">Download the iDen2 app</span>
+                {/* First Time User Instructions - Collapsible */}
+                <div className="border-t border-gray-200 pt-4">
+                  <details className="group">
+                    <summary className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-teal-600 transition-colors flex items-center justify-between">
+                      <span>First time using iDen2? Get started here</span>
+                      <span className="text-teal-600 group-open:rotate-180 transition-transform">▼</span>
+                    </summary>
+                    <div className="mt-4 space-y-3">
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-xs font-semibold text-teal-600">1</span>
                         </div>
-                          <div className="flex items-center gap-2 mb-2">
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-gray-900 mb-2">Download the iDen2 app</p>
+                          <div className="flex items-center gap-2">
                             <a
                               href="https://apps.apple.com/app/iden2"
                               target="_blank"
@@ -305,51 +280,196 @@ export default function PatientInfo() {
                               <span>Google Play</span>
                             </a>
                           </div>
-                        <p className="text-xs text-gray-600">
-                          Available on iOS and Android app stores
-                        </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-xs font-semibold text-teal-600">2</span>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-700">Complete IDV verification in the app</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-xs font-semibold text-teal-600">3</span>
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-700">Return here and scan the QR code above</p>
+                        </div>
                       </div>
                     </div>
+                  </details>
+                </div>
 
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <span className="text-xs font-semibold text-teal-600">2</span>
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <MdVerifiedUser className="text-teal-600 text-sm" />
-                          <span className="font-medium text-sm text-gray-900">Complete IDV (Identity Verification)</span>
-                        </div>
-                        <p className="text-xs text-gray-600">
-                          Verify your identity by uploading your ID document in the app
+                {/* Continue Button */}
+                <div className="mt-6 pt-4 border-t border-gray-200 text-center">
+                  <button
+                    onClick={handleQRCodeScanned}
+                    className="text-sm text-teal-600 hover:text-teal-700 font-medium cursor-pointer underline"
+                  >
+                    Already scanned? Click here to continue
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+              // Standard Flow - Simplified and cleaner layout
+              <div className="mb-6 p-6 bg-gradient-to-r from-teal-50 to-indigo-50 rounded-xl border-2 border-teal-200">
+                {/* Header - Simplified */}
+                <div className="mb-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm p-2">
+                      <img
+                        src={iden2Logo}
+                        alt="iDen2"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Connect with <span className="font-semibold" style={{ color: '#783adb' }}>iDen2</span>
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Securely share your information by scanning the QR code below
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* How it works */}
+                  <div className="mt-4 pt-4 border-t border-teal-200/50">
+                    <h4 className="font-semibold text-gray-900 text-sm mb-2">
+                      How it works?
+                    </h4>
+                    <div className="space-y-1.5">
+                      <div className="flex items-start gap-2">
+                        <MdSpeed className="text-teal-600 text-sm flex-shrink-0 mt-0.5" />
+                        <p className="text-xs text-gray-700">
+                          <span className="font-medium">Save time:</span> Automatically fills your information, insurance, and contact details
                         </p>
                       </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <span className="text-xs font-semibold text-teal-600">3</span>
+                      <div className="flex items-start gap-2">
+                        <MdSecurity className="text-teal-600 text-sm flex-shrink-0 mt-0.5" />
+                        <p className="text-xs text-gray-700">
+                          <span className="font-medium">Secure & verified:</span> Your identity is verified and stored securely
+                        </p>
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <MdQrCodeScanner className="text-teal-600 text-sm" />
-                          <span className="font-medium text-sm text-gray-900">Scan this QR code</span>
-                        </div>
-                        <p className="text-xs text-gray-600">
-                          Open the iDen2 app and scan the QR code to connect
+                      <div className="flex items-start gap-2">
+                        <MdCheckCircleOutline className="text-teal-600 text-sm flex-shrink-0 mt-0.5" />
+                        <p className="text-xs text-gray-700">
+                          <span className="font-medium">No errors:</span> Eliminate typos and ensure accuracy
                         </p>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div className="mt-4 pt-4 border-t border-gray-200">
+                {/* QR Code Section - Main Focus */}
+                <div className="bg-white rounded-xl p-6 border-2 border-teal-300 shadow-lg">
+                  <div className="text-center mb-6">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Scan QR Code to Connect</h3>
+                    <p className="text-sm text-gray-600">Open your iDen2 app and scan the QR code below to securely share your information</p>
+                  </div>
+
+                  {/* QR Code - Centered and Prominent */}
+                  <div className="flex justify-center mb-6">
+                    <div className="bg-white p-6 rounded-xl border-4 border-teal-200 shadow-xl">
+                      <div className="w-[220px] h-[220px] bg-white relative" style={{
+                      backgroundImage: `
+                        repeating-linear-gradient(0deg, #000 0px, #000 10px, #fff 10px, #fff 20px),
+                        repeating-linear-gradient(90deg, #000 0px, #000 10px, #fff 10px, #fff 20px)
+                      `,
+                        backgroundSize: '20px 20px'
+                    }}>
+                      {/* Corner markers */}
+                        <div className="absolute top-4 left-4 w-16 h-16 border-4 border-black bg-white">
+                          <div className="absolute top-1 left-1 w-5 h-5 bg-black"></div>
+                          <div className="absolute top-1 right-1 w-5 h-5 bg-black"></div>
+                          <div className="absolute bottom-1 left-1 w-5 h-5 bg-black"></div>
+                      </div>
+                        <div className="absolute top-4 right-4 w-16 h-16 border-4 border-black bg-white">
+                          <div className="absolute top-1 left-1 w-5 h-5 bg-black"></div>
+                          <div className="absolute top-1 right-1 w-5 h-5 bg-black"></div>
+                          <div className="absolute bottom-1 right-1 w-5 h-5 bg-black"></div>
+                      </div>
+                        <div className="absolute bottom-4 left-4 w-16 h-16 border-4 border-black bg-white">
+                          <div className="absolute bottom-1 left-1 w-5 h-5 bg-black"></div>
+                          <div className="absolute bottom-1 right-1 w-5 h-5 bg-black"></div>
+                          <div className="absolute top-1 left-1 w-5 h-5 bg-black"></div>
+                      </div>
+                    </div>
+                    </div>
+                </div>
+                  <p className="text-center text-sm font-medium text-gray-700 mb-6">Scan with your iDen2 app</p>
+
+                  {/* First Time User Instructions - Collapsible */}
+                  <div className="border-t border-gray-200 pt-4">
+                    <details className="group">
+                      <summary className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-teal-600 transition-colors flex items-center justify-between">
+                        <span>First time using iDen2? Get started here</span>
+                        <span className="text-teal-600 group-open:rotate-180 transition-transform">▼</span>
+                      </summary>
+                      <div className="mt-4 space-y-3">
+                        <div className="flex items-start gap-3">
+                          <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-xs font-semibold text-teal-600">1</span>
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-900 mb-2">Download the iDen2 app</p>
+                            <div className="flex items-center gap-2">
+                            <a
+                              href="https://apps.apple.com/app/iden2"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-3 py-2 bg-black text-white rounded-lg text-xs font-medium hover:bg-gray-800 transition-colors cursor-pointer"
+                            >
+                              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                              </svg>
+                              <span>App Store</span>
+                            </a>
+                            <a
+                              href="https://play.google.com/store/apps/details?id=com.iden2"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 px-3 py-2 bg-black text-white rounded-lg text-xs font-medium hover:bg-gray-800 transition-colors cursor-pointer"
+                            >
+                              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
+                              </svg>
+                              <span>Google Play</span>
+                            </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-xs font-semibold text-teal-600">2</span>
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-700">Complete IDV verification in the app</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-xs font-semibold text-teal-600">3</span>
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-700">Return here and scan the QR code above</p>
+                          </div>
+                      </div>
+                    </div>
+                    </details>
+                  </div>
+
+                  {/* Continue Button */}
+                  <div className="mt-6 pt-4 border-t border-gray-200 text-center">
                     <button
                       onClick={handleQRCodeScanned}
-                      className="text-sm text-teal-600 hover:text-teal-700 font-medium cursor-pointer"
+                      className="text-sm text-teal-600 hover:text-teal-700 font-medium cursor-pointer underline"
                     >
                       Already scanned? Click here to continue
                     </button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -413,6 +533,28 @@ export default function PatientInfo() {
         {isIden2Connected && (
           <div className="space-y-6 mb-6">
             <p className="text-gray-600 mb-6">Please review your appointment details</p>
+
+            {/* Time Selection */}
+            <div className="border-b border-gray-200 pb-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <MdAccessTime className="text-teal-600" />
+                Select Appointment Time
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM'].map((time) => (
+                  <button
+                    key={time}
+                    onClick={() => setSelectedTime(time)}
+                    className={`px-4 py-3 rounded-lg font-medium transition-all cursor-pointer ${selectedTime === time
+                      ? 'bg-teal-600 text-white shadow-md'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                      }`}
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* Doctor Information */}
             <div className="border-b border-gray-200 pb-6">
@@ -523,7 +665,7 @@ export default function PatientInfo() {
                     <MdAccessTime className="text-gray-400" />
                     Time:
                   </span>
-                  <span className="font-medium text-gray-900">10:00 AM</span>
+                  <span className="font-medium text-gray-900">{selectedTime}</span>
                 </div>
               </div>
             </div>
@@ -571,7 +713,7 @@ export default function PatientInfo() {
               <p className="text-lg font-semibold text-gray-900">{doctor.name}</p>
               <p className="text-teal-600 font-medium">{doctor.specialty}</p>
               <p className="text-sm text-gray-600 mt-2">
-                {appointmentDate} at 10:00 AM
+                {appointmentDate} at {selectedTime || '10:00 AM'}
               </p>
             </div>
           </div>
